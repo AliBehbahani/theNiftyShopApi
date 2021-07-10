@@ -1,5 +1,4 @@
-const { Nft } = require("../../db/models");
-// const slugify = require("slugify");
+const { Nft, Gallery } = require("../../db/models");
 
 exports.nftFetch = async (nftId, next) => {
   try {
@@ -13,7 +12,12 @@ exports.nftFetch = async (nftId, next) => {
 exports.fetchNft = async (req, res, next) => {
   try {
     const nfts = await Nft.findAll({
-      attributes: { exclude: ["createdAt", "updatedAt"] },
+      attributes: { exclude: ["createdAt", "updatedAt", "galleryId"] },
+      include: {
+        model: Gallery,
+        as: "gallery",
+        attributes: ["name"],
+      },
     });
     res.json(nfts);
   } catch (error) {
@@ -23,7 +27,7 @@ exports.fetchNft = async (req, res, next) => {
 };
 
 exports.deleteNft = async (req, res, next) => {
-  const { nftId } = req.params;
+  // const { nftId } = req.params;
   // const foundNft = nfts.find((nft) => nft.id === +nftId);
   try {
     await req.nft.destroy();
@@ -44,35 +48,18 @@ exports.deleteNft = async (req, res, next) => {
   }
 };
 
-exports.createNft = async (req, res, next) => {
-  // const id = nfts.length + 1;
-  // const slug = slugify(req.body.name, { lower: true });
-  // const newNft = {
-  //   id,
-  //   slug,
-  //   ...req.body,
-  // };
-  // nfts.push(newNft);
-  try {
-    const newNft = await Nft.create(req.body);
-    res.status(201).json(newNft);
-  } catch (error) {
-    // res.status(500).json({ message: error.message });
-    next(error);
-  }
-};
-
 exports.updateNft = async (req, res, next) => {
   // const { nftId } = req.params;
   // const foundNft = nfts.find((nft) => nft.id === +nftId);
   try {
-    await req.nft.update(erq.body);
+    if (req.file) req.body.image = `http://${req.get("host")}/${req.file.path}`;
+    const updatedNft = await req.nft.update(req.body);
     // const foundNft = await fetchNft(nftId, next);
     // if (foundNft) {
     //   await foundNft.update(req.body);
     // for (const key in req.body) foundNft[key] = req.body[key];
     // foundNft.slug = slugify(foundNft.name, { lower: true });
-    res.status(204).end();
+    res.json(updatedNft);
     //  else {
     // res.status(404).json({ message: "nft not found" });
     // const error = new Error("Nft not found");

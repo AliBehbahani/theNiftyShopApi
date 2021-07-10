@@ -1,11 +1,7 @@
 const express = require("express");
-const {
-  fetchNft,
-  deleteNft,
-  createNft,
-  updateNft,
-  nftFetch,
-} = require("./controllers");
+const { fetchNft, deleteNft, updateNft, nftFetch } = require("./controllers");
+const multer = require("multer");
+
 const router = express.Router();
 
 //param middleware
@@ -20,11 +16,18 @@ router.param("nftId", async (req, res, next, nftId) => {
     next(error);
   }
 });
+//multer
+const storage = multer.diskStorage({
+  destination: "./media",
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}${file.originalname}`);
+  },
+});
+const upload = multer({ storage });
 
 //crud routes
 router.get("/", fetchNft);
 router.delete("/:nftId", deleteNft);
-router.post("/", createNft);
-router.put("/:nftId", updateNft);
+router.put("/:nftId", upload.single("image"), updateNft);
 
 module.exports = router;

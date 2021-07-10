@@ -4,25 +4,27 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const nftRoutes = require("./API/nft/routes");
+const galleryRoutes = require("./API/gallery/routes");
 
 const db = require("./db/models/index");
+
 const app = express();
 
 //Middleware
 app.use(cors());
 app.use(bodyParser.json());
-// app.use((req, res, next) => {
-//   next();
-// });
 
 //Routes
 app.use("/nfts", nftRoutes);
+app.use("/galleries", galleryRoutes);
+app.use("/media", express.static("media"));
 
 //path middleware
 app.use((req, res, next) => {
   res.status(404).json({ message: "path not found" });
   next();
 });
+
 //error handling middleware  (order is imp)
 app.use((err, req, res, next) => {
   res
