@@ -5,6 +5,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const nftRoutes = require("./API/nft/routes");
 const galleryRoutes = require("./API/gallery/routes");
+const userRouter = require("./API/user/routes");
 
 const db = require("./db/models/index");
 
@@ -17,6 +18,7 @@ app.use(bodyParser.json());
 //Routes
 app.use("/nfts", nftRoutes);
 app.use("/galleries", galleryRoutes);
+app.use(userRouter);
 app.use("/media", express.static("media"));
 
 //path middleware
