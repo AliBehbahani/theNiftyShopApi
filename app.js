@@ -6,6 +6,8 @@ const bodyParser = require("body-parser");
 const nftRoutes = require("./API/nft/routes");
 const galleryRoutes = require("./API/gallery/routes");
 const userRouter = require("./API/user/routes");
+const passport = require("passport");
+const { localStrat } = require("./middleware/passport");
 
 const db = require("./db/models/index");
 
@@ -14,6 +16,8 @@ const app = express();
 //Middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(passport.initialize());
+passport.use(localStrat);
 
 //Routes
 app.use("/nfts", nftRoutes);
