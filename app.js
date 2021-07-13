@@ -8,6 +8,7 @@ const galleryRoutes = require("./API/gallery/routes");
 const userRouter = require("./API/user/routes");
 const passport = require("passport");
 const { localStrat } = require("./middleware/passport");
+const { jwtStrat } = require("./middleware/passport");
 
 const db = require("./db/models/index");
 
@@ -18,7 +19,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(passport.initialize());
 passport.use(localStrat);
-
+passport.use(jwtStrat);
 //Routes
 app.use("/nfts", nftRoutes);
 app.use("/galleries", galleryRoutes);

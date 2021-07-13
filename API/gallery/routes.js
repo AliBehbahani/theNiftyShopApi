@@ -6,6 +6,7 @@ const {
   galleryFetch,
 } = require("./controllers");
 const multer = require("multer");
+const passport = require("passport");
 const router = express.Router();
 //multer
 const storage = multer.diskStorage({
@@ -33,8 +34,18 @@ router.param("galleryId", async (req, res, next, galleryId) => {
 router.get("/", fetchGallery);
 
 //Create
-router.post("/", upload.single("image"), createGallery);
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  createGallery
+);
 
-router.post("/:galleryId/nfts", upload.single("image"), createNft);
+router.post(
+  "/:galleryId/nfts",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  createNft
+);
 
 module.exports = router;

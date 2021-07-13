@@ -53,5 +53,8 @@ db.Nft.belongsTo(db.Gallery, {
   as: "gallery",
   foreignKey: "galleryId",
 });
+db.User.hasOne(db.Gallery, { as: "gallery", foreignKey: "userId" });
+
+db.Gallery.belongsTo(db.User, { as: "user" });
 
 module.exports = db;
