@@ -1,11 +1,12 @@
+//library imports
 const LocalStrat = require("passport-local").Strategy;
 const JWTStrat = require("passport-jwt").Strategy;
-
-const { User } = require("../db/models");
-
-const bcrypt = require("bcrypt");
-const { JWT_SECRET } = require("../config/keys");
 const { fromAuthHeaderAsBearerToken } = require("passport-jwt").ExtractJwt;
+const bcrypt = require("bcrypt");
+//components
+const { JWT_SECRET } = require("../config/keys");
+//databases
+const { User } = require("../db/models");
 
 exports.localStrat = new LocalStrat(async (username, password, done) => {
   try {
@@ -25,6 +26,7 @@ exports.localStrat = new LocalStrat(async (username, password, done) => {
     done(error);
   }
 });
+
 exports.jwtStrat = new JWTStrat(
   {
     jwtFromRequest: fromAuthHeaderAsBearerToken(),

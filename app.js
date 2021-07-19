@@ -1,15 +1,16 @@
-//imports
-
+//library imports
 const express = require("express");
+const passport = require("passport");
+//middleware
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const { localStrat } = require("./middleware/passport");
+const { jwtStrat } = require("./middleware/passport");
+//routes
 const nftRoutes = require("./API/nft/routes");
 const galleryRoutes = require("./API/gallery/routes");
 const userRouter = require("./API/user/routes");
-const passport = require("passport");
-const { localStrat } = require("./middleware/passport");
-const { jwtStrat } = require("./middleware/passport");
-
+//databases
 const db = require("./db/models/index");
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 passport.use(localStrat);
 passport.use(jwtStrat);
+
 //Routes
 app.use("/nfts", nftRoutes);
 app.use("/galleries", galleryRoutes);
@@ -39,6 +41,7 @@ app.use((err, req, res, next) => {
     .json({ message: err.message || "Internal server error" });
 });
 
+//run
 const run = async () => {
   try {
     await db.sequelize.sync({ alter: true });

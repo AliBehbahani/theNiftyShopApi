@@ -1,13 +1,18 @@
+//library imports
 const express = require("express");
+const multer = require("multer");
+const passport = require("passport");
+//components
 const {
   fetchGallery,
   createGallery,
   createNft,
   galleryFetch,
 } = require("./controllers");
-const multer = require("multer");
-const passport = require("passport");
+//************************************************************************************* */
+
 const router = express.Router();
+
 //multer
 const storage = multer.diskStorage({
   destination: "./media",
@@ -33,7 +38,7 @@ router.param("galleryId", async (req, res, next, galleryId) => {
 //List
 router.get("/", fetchGallery);
 
-//Create
+//Create gallery
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
@@ -41,6 +46,7 @@ router.post(
   createGallery
 );
 
+//Create nft
 router.post(
   "/:galleryId/nfts",
   passport.authenticate("jwt", { session: false }),

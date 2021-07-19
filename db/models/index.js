@@ -43,7 +43,7 @@ Object.keys(db).forEach((modelName) => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-//model relationshipppp
+//********** model relationships ***********
 db.Gallery.hasMany(db.Nft, {
   foreignKey: "galleryId",
   allowNull: false,

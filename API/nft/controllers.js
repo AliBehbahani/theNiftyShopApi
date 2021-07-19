@@ -1,4 +1,6 @@
+//databases
 const { Nft, Gallery } = require("../../db/models");
+//********************************************************************************** */
 
 exports.nftFetch = async (nftId, next) => {
   try {

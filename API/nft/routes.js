@@ -1,6 +1,9 @@
+//library imports
 const express = require("express");
-const { fetchNft, deleteNft, updateNft, nftFetch } = require("./controllers");
 const multer = require("multer");
+//components
+const { fetchNft, deleteNft, updateNft, nftFetch } = require("./controllers");
+//***********************************************************************************/
 
 const router = express.Router();
 
@@ -26,8 +29,14 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 //crud routes
+
+//list
 router.get("/", fetchNft);
+
+//delete
 router.delete("/:nftId", deleteNft);
+
+//update
 router.put("/:nftId", upload.single("image"), updateNft);
 
 module.exports = router;

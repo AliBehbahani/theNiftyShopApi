@@ -1,7 +1,11 @@
-const { User } = require("../../db/models");
+//library imports
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+//components
 const { JWT_SECRET, JWT_EXPIRATION_MS } = require("../../config/keys");
+//databases
+const { User } = require("../../db/models");
+//********************************************************************************** */
 
 exports.signup = async (req, res, next) => {
   const password = req.body.password;
