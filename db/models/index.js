@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { BelongsToMany } = require("sequelize");
 const Sequelize = require("sequelize");
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
@@ -56,5 +57,14 @@ db.Nft.belongsTo(db.Gallery, {
 db.User.hasOne(db.Gallery, { as: "gallery", foreignKey: "userId" });
 
 db.Gallery.belongsTo(db.User, { as: "user" });
+
+db.User.hasMany(db.Order, { foreignKey: "userId", as: "orders" });
+db.Order.belongsTo(db.User, { as: "user" });
+
+db.Order.belongsToMany(db.Nft, {
+  through: db.OrderItem,
+  foreignKey: "orderId",
+});
+db.Nft.belongsToMany(db.Order, { through: db.OrderItem, foreignKey: "nftId" });
 
 module.exports = db;

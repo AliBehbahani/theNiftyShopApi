@@ -10,6 +10,7 @@ const { jwtStrat } = require("./middleware/passport");
 const nftRoutes = require("./API/nft/routes");
 const galleryRoutes = require("./API/gallery/routes");
 const userRouter = require("./API/user/routes");
+const orderRouter = require("./API/order/routes");
 //databases
 const db = require("./db/models/index");
 
@@ -27,6 +28,7 @@ app.use("/nfts", nftRoutes);
 app.use("/galleries", galleryRoutes);
 app.use(userRouter);
 app.use("/media", express.static("media"));
+app.use(orderRouter);
 
 //path middleware
 app.use((req, res, next) => {
